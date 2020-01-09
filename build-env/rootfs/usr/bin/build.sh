@@ -214,12 +214,15 @@ Options:
     --armhf
         Build for armhf (arm 32 bits) architecture.
 
+    --armv7
+        Build for armv7 (arm 64/32 bits) architecture.
+
     --i386
         Build for i386 (intel/amd 32 bits) architecture.
 
     -a, --all
         Build for all architectures.
-        Same as --aarch64 --amd64 --armhf --i386.
+        Same as --aarch64 --amd64 --armhf --armv7 --i386.
         If a limited set of supported architectures is defined in
         a configuration file, that list is still honored when using
         this flag.
@@ -241,6 +244,11 @@ Options:
     --armhf-from <image>
         Use a custom base image when building for armhf.
         e.g. --armhf-image "homeassistant/armhf-base".
+        Note: This overrides the --from flag for this architecture.
+
+    --armv7-from <image>
+        Use a custom base image when building for armv7.
+        e.g. --armv7-image "homeassistant/armv7-base".
         Note: This overrides the --from flag for this architecture.
 
     --i386-from <image>
@@ -1011,6 +1019,9 @@ parse_cli_arguments() {
             --armhf)
                 BUILD_ARCHS+=(armhf)
                 ;;
+            --armv7)
+                BUILD_ARCHS+=(armv7)
+                ;;
             --i386)
                 BUILD_ARCHS+=(i386)
                 ;;
@@ -1033,6 +1044,12 @@ parse_cli_arguments() {
                 # https://github.com/koalaman/shellcheck/issues/359
                 # shellcheck disable=SC2154
                 BUILD_ARCHS_FROM['armhf']="${2}"
+                shift
+                ;;
+            --armv7-from)
+                # https://github.com/koalaman/shellcheck/issues/359
+                # shellcheck disable=SC2154
+                BUILD_ARCHS_FROM['armv7']="${2}"
                 shift
                 ;;
             --i386-from)
